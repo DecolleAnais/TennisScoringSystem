@@ -1,4 +1,5 @@
 #include "TennisSetScoringSystem.h"
+#include <iostream>
 
 TennisSetScoringSystem::TennisSetScoringSystem()
 {
@@ -7,6 +8,8 @@ TennisSetScoringSystem::TennisSetScoringSystem()
 
 void TennisSetScoringSystem::pointWonBy(const int player)
 {
+	// std::cout << "score : " << score() << std::endl;
+
 	games[currentGameIndex].pointWonBy(player);
 
 	if(games[currentGameIndex].isEnded())
@@ -123,8 +126,10 @@ bool TennisSetScoringSystem::isEnded() const
 	int nbGamesWonByPlayer2 = getNbGamesWonBy(1);
 
 	//advantage game case
-	//return games[5].isEnded() && std::abs(nbGamesWonByPlayer1 - nbGamesWonByPlayer2) >= 2; 
+	bool endedByAdvantage = (nbGamesWonByPlayer1 == 6 || nbGamesWonByPlayer2 == 6)  && std::abs(nbGamesWonByPlayer1 - nbGamesWonByPlayer2) >= 2;
 
-	// tie-break game case
-	return games[5].isEnded() && nbGamesWonByPlayer1 != nbGamesWonByPlayer2; 
+	// tie-break game case (if score for games is 6-6)
+	bool endedByTieBreak = nbGamesWonByPlayer1 >= 6 && nbGamesWonByPlayer2 >= 6 && std::abs(nbGamesWonByPlayer1 - nbGamesWonByPlayer2) == 1;
+
+	return endedByAdvantage || endedByTieBreak;
 }

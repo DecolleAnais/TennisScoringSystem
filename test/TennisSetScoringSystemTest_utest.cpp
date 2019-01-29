@@ -37,8 +37,17 @@ TEST(TennisSetScoringSystemTest, if_set1_score_0_4_set2_score_5_6_the_plain_engl
     set.pointsWonBy(TennisScoringSystem::Player1, 1);  
     set.pointsWonBy(TennisScoringSystem::Player2, 2); 
     ASSERT_EQ(set.plainEnglishScore(),"| Game won by Player2 || Advantage Player2 || Love-All || Love-All || Love-All || Love-All |");
+    ASSERT_EQ(set.plainEnglishScore(0),"Game won by Player2");
+    ASSERT_EQ(set.plainEnglishScore(1),"Advantage Player2");
+    ASSERT_EQ(set.plainEnglishScore(2),"Love-All");
     ASSERT_EQ(set.plainNumericalScore(),"| Game won by Player2 || 40-40A || 0-0 || 0-0 || 0-0 || 0-0 |");
+    ASSERT_EQ(set.plainNumericalScore(0),"Game won by Player2");
+    ASSERT_EQ(set.plainNumericalScore(1),"40-40A");
+    ASSERT_EQ(set.plainNumericalScore(2),"0-0");
     ASSERT_EQ(set.score(),"| 0-4 || 5-6 || 0-0 || 0-0 || 0-0 || 0-0 |");
+    ASSERT_EQ(set.score(0),"0-4");
+    ASSERT_EQ(set.score(1),"5-6");
+    ASSERT_EQ(set.score(2),"0-0");
     ASSERT_FALSE(set.isEnded());
 }
 
@@ -70,5 +79,86 @@ TEST(TennisSetScoringSystemTest, if_score_0_4_for_3_sets_and_score_4_0_for_3_set
     ASSERT_EQ(set.plainEnglishScore(),"| Game won by Player2 || Game won by Player2 || Game won by Player2 || Game won by Player1 || Game won by Player1 || Game won by Player1 || Love-All |");
     ASSERT_EQ(set.plainNumericalScore(),"| Game won by Player2 || Game won by Player2 || Game won by Player2 || Game won by Player1 || Game won by Player1 || Game won by Player1 || 0-0 |");
     ASSERT_EQ(set.score(),"| 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 0-0 |");
+    ASSERT_FALSE(set.isEnded());
+}
+
+TEST(TennisSetScoringSystemTest, if_player1_wins_5_games_and_player2_wins_6_games_the_set_should_not_be_ended)
+{
+    TennisSetScoringSystem set;
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    ASSERT_EQ(set.score(),"| 0-4 || 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-4 || 0-0 |");
+    ASSERT_FALSE(set.isEnded());
+}
+
+TEST(TennisSetScoringSystemTest, if_player1_wins_6_games_and_player2_wins_6_games_the_set_should_not_be_ended)
+{
+    TennisSetScoringSystem set;
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+    ASSERT_EQ(set.score(),"| 0-4 || 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-4 || 4-0 || 0-0 |");
+    ASSERT_FALSE(set.isEnded());
+}
+
+TEST(TennisSetScoringSystemTest, if_player1_wins_7_games_and_player2_wins_6_games_the_set_should_be_ended)
+{
+    TennisSetScoringSystem set;
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+    ASSERT_EQ(set.score(),"| 0-4 || 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-4 || 4-0 || 4-0 |");
+    ASSERT_TRUE(set.isEnded());
+    ASSERT_EQ(set.getWinner(), 0);
+}
+
+TEST(TennisSetScoringSystemTest, if_player1_wins_6_games_and_player2_wins_4_games_the_set_should_be_ended)
+{
+    TennisSetScoringSystem set;
+
+    for(int i = 0;i < 4;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    for(int i = 0;i < 6;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+    ASSERT_EQ(set.score(),"| 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 |");
+    ASSERT_TRUE(set.isEnded());
+    ASSERT_EQ(set.getWinner(), 0);
+}
+
+TEST(TennisSetScoringSystemTest, if_player1_wins_5_games_and_player2_wins_4_games_the_set_should_not_be_ended)
+{
+    TennisSetScoringSystem set;
+
+    for(int i = 0;i < 4;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    for(int i = 0;i < 5;i++)
+    	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+    ASSERT_EQ(set.score(),"| 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-0 |");
     ASSERT_FALSE(set.isEnded());
 }
