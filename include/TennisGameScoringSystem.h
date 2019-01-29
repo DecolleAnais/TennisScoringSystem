@@ -15,8 +15,7 @@ private:
 		{0, "Love"},
 		{1, "Fifteen"},
 		{2, "Thirty"},
-		{3, "Forty"},
-		{4, "Advantage"}
+		{3, "Forty"}
 	};
 
 	std::map<int, std::string> mapOfPlainNumericalScores = 
@@ -24,9 +23,10 @@ private:
 		{0, "0"},
 		{1, "15"},
 		{2, "30"},
-		{3, "40"},
-		{4, "40A"}
+		{3, "40"}
 	};
+
+	int maxPossibleScore;
 
 
 public:
@@ -45,5 +45,5 @@ public:
 
 	int getWinner() const;
 
-	bool isEnded();
+	bool isEnded() const;
 };

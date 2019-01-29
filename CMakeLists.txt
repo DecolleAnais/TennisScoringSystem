@@ -8,6 +8,7 @@ add_executable(TennisScoringSystemTest
       ./src/TennisGameScoringSystem.cpp
       ./src/TennisScoringSystem.cpp
       ./test/TennisScoringSystemTest_utest.cpp
+      ./test/TennisGameScoringSystemTest_utest.cpp
       ./3rdparty/gtest/gtest-all.cc
 )
 target_link_libraries(TennisScoringSystemTest pthread stdc++)

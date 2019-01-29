@@ -7,7 +7,7 @@
 
 TennisGameScoringSystem::TennisGameScoringSystem()
 {
-
+	maxPossibleScore = (--mapOfPlainNumericalScores.end())->first;
 }
 
 void TennisGameScoringSystem::pointWonBy(int player)
@@ -28,7 +28,11 @@ std::string TennisGameScoringSystem::plainEnglishScore() const
 {	
 	std::string score = "";
 
-	if(gameScore[0] == gameScore[1])
+	if(isEnded())
+	{
+		score = "Game won by Player" + std::to_string(getWinner() + 1);
+	}
+	else if(gameScore[0] == gameScore[1])
 	{
 		if(gameScore[0] >= 3)
 		{
@@ -43,18 +47,9 @@ std::string TennisGameScoringSystem::plainEnglishScore() const
 	{
 		int maxScore = std::max(gameScore[0], gameScore[1]);
 
-		if(maxScore >= 4)
+		if(maxScore > maxPossibleScore)
 		{
-			int playerWithMaxScore = getWinner();
-
-			if(std::abs(gameScore[0] - gameScore[1]) >= 2)
-			{	
-				score = "Game won by Player" + std::to_string(playerWithMaxScore + 1);
-			}
-			else
-			{
-				score = "Advantage Player" + std::to_string(playerWithMaxScore + 1);
-			}
+				score = "Advantage Player" + std::to_string(getWinner() + 1);
 		}
 		else
 		{
@@ -68,32 +63,26 @@ std::string TennisGameScoringSystem::plainNumericalScore() const
 {
 	std::string score = "";
 
-	int maxScore = std::max(gameScore[0], gameScore[1]);
+	int currentMaxScore = std::max(gameScore[0], gameScore[1]);
 
-	if(maxScore >= 4)
+	int maxPossibleScore = (--mapOfPlainNumericalScores.end())->first;
+
+	std::string advantageScore1 = "";
+	std::string advantageScore2 = "";
+
+	if(isEnded())
 	{
-		if(gameScore[0] == gameScore[1])
-		{
-			score = "40-40";
-		}
-		else if(std::abs(gameScore[0] - gameScore[1]) >= 2)
-		{				
-			int playerWithMaxScore = getWinner();
-			score = "Game won by Player" + std::to_string(playerWithMaxScore + 1);
-		}
-		else if(gameScore[0] > gameScore[1])
-		{
-			score = "40A-40";
-		}
-		else
-		{
-			score = "40-40A";
-		}
+		return "Game won by Player" + std::to_string(getWinner() + 1);
 	}
-	else
+	else if(currentMaxScore > maxPossibleScore)
 	{
-		score = mapOfPlainNumericalScores.at(gameScore[0]) + "-" + mapOfPlainNumericalScores.at(gameScore[1]);
+		gameScore[0] > gameScore[1] ? advantageScore1 = "A" : advantageScore2 = "A";
 	}
+
+	std::string score1 = mapOfPlainNumericalScores.at( std::min(gameScore[0], maxPossibleScore) ) + advantageScore1;
+	std::string score2 = mapOfPlainNumericalScores.at( std::min(gameScore[1], maxPossibleScore) ) + advantageScore2;
+
+	score =  score1 + "-" + score2;
 
 	return score;
 }
@@ -108,7 +97,9 @@ int TennisGameScoringSystem::getWinner() const
 	return (gameScore[0] > gameScore[1]) ? 0 : 1;
 }
 
-bool TennisGameScoringSystem::isEnded()
+bool TennisGameScoringSystem::isEnded() const
 {
-	return true;
+	int maxScore = std::max(gameScore[0], gameScore[1]);
+
+	return (maxScore >= 4 && std::abs(gameScore[0] - gameScore[1]) >= 2);
 }
