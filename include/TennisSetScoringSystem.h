@@ -8,11 +8,13 @@ class TennisSetScoringSystem
 private:
 	std::vector<TennisGameScoringSystem> games;
 
+	int currentGameIndex = 0;
 
 public:
 	TennisSetScoringSystem();
 
 	void pointWonBy(const int player);
+	void pointsWonBy(const int player, const int nbPointsWon);
 
 	std::string plainEnglishScore() const;
 	std::string plainEnglishScore(const int gameIndex) const;
@@ -27,6 +29,7 @@ public:
 	std::array<int,2> getGameScore(const int gameIndex) const;
 
 	int getNbGamesWonBy(int player) const;
+	int getWinner() const;
 
 	bool isEnded() const;
 };

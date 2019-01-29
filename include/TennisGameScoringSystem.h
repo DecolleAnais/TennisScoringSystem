@@ -35,13 +35,15 @@ public:
 
 	void pointWonBy(int player);
 
-	void pointsWonBy(int player, int nbPointsWon);
+	void pointsWonBy(int player, const int nbPointsWon);
 
 	std::string plainEnglishScore() const;
 
 	std::string plainNumericalScore() const;
 
-	std::array<int,2> getScore() const;
+	std::array<int,2> getGameScore() const;
+
+	int getScoreOf(int player) const;
 
 	int getWinner() const;
 
