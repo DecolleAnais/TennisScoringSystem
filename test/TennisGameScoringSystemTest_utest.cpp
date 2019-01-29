@@ -77,6 +77,7 @@ TEST(TennisGameScoringSystemTest, if_player2_wins_2_points_and_player1_wins_4_po
     ASSERT_EQ(game.plainEnglishScore(),"Game won by Player1");
     ASSERT_EQ(game.plainNumericalScore(),"Game won by Player1");
     ASSERT_TRUE(game.isEnded());
+    ASSERT_EQ(game.getWinner(), 0);
 }
 
 TEST(TennisGameScoringSystemTest, if_player1_wins_first_4_points_and_player2_wins_5_points_the_plain_english_score_should_be_Advantage_Player2)
