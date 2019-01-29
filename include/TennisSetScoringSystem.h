@@ -16,17 +16,17 @@ public:
 	void pointWonBy(const int player);
 	void pointsWonBy(const int player, const int nbPointsWon);
 
-	std::string plainEnglishScore() const;
-	std::string plainEnglishScore(const int gameIndex) const;
+	std::string fullEnglishScore() const;
+	std::string plainEnglishScore(int gameIndex = -1) const;
 
-	std::string plainNumericalScore() const;
-	std::string plainNumericalScore(const int gameIndex) const;
+	std::string fullNumericalScore() const;
+	std::string plainNumericalScore(int gameIndex = -1) const;
 
-	std::string score() const;
-	std::string score(const int gameIndex) const;
+	std::string fullScore() const;
+	std::string score(int gameIndex = -1) const;
 
 	std::vector<std::array<int,2>> getGameScores() const;
-	std::array<int,2> getGameScore(const int gameIndex) const;
+	std::array<int,2> getGameScore(int gameIndex = -1) const;
 
 	int getNbGamesWonBy(int player) const;
 	int getWinner() const;

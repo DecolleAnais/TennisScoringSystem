@@ -32,7 +32,7 @@ void TennisSetScoringSystem::pointsWonBy(const int player, const int nbPointsWon
 	}
 }
 
-std::string TennisSetScoringSystem::plainEnglishScore() const
+std::string TennisSetScoringSystem::fullEnglishScore() const
 {
 	std::string res = "";
 
@@ -44,12 +44,15 @@ std::string TennisSetScoringSystem::plainEnglishScore() const
 	return res;
 }
 
-std::string TennisSetScoringSystem::plainEnglishScore(const int gameIndex) const
+std::string TennisSetScoringSystem::plainEnglishScore(int gameIndex) const
 {
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+
 	return games[gameIndex].plainEnglishScore();
 }
 
-std::string TennisSetScoringSystem::plainNumericalScore() const
+std::string TennisSetScoringSystem::fullNumericalScore() const
 {
 	std::string res = "";
 
@@ -60,12 +63,16 @@ std::string TennisSetScoringSystem::plainNumericalScore() const
 
 	return res;
 }
-std::string TennisSetScoringSystem::plainNumericalScore(const int gameIndex) const
+
+std::string TennisSetScoringSystem::plainNumericalScore(int gameIndex) const
 {
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+	
 	return games[gameIndex].plainNumericalScore();
 }
 
-std::string TennisSetScoringSystem::score() const
+std::string TennisSetScoringSystem::fullScore() const
 {
 	std::string res = "";
 
@@ -76,8 +83,11 @@ std::string TennisSetScoringSystem::score() const
 
 	return res;
 }
-std::string TennisSetScoringSystem::score(const int gameIndex) const
+std::string TennisSetScoringSystem::score(int gameIndex) const
 {
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+	
 	return std::to_string(games[gameIndex].getScoreOf(0)) + "-" + std::to_string(games[gameIndex].getScoreOf(1));
 }
 
@@ -91,8 +101,11 @@ std::vector<std::array<int,2>> TennisSetScoringSystem::getGameScores() const
 	return gameScores;
 }
 
-std::array<int,2> TennisSetScoringSystem::getGameScore(const int gameIndex) const
+std::array<int,2> TennisSetScoringSystem::getGameScore(int gameIndex) const
 {
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+	
 	return games[gameIndex].getGameScore();
 }
 
