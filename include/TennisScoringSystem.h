@@ -9,6 +9,8 @@ private:
 
   std::vector<TennisSetScoringSystem> sets;
 
+  int currentSetIndex = 0;
+
 public:
   enum Player {
     Player1,
@@ -27,21 +29,23 @@ public:
   void pointsWonBy(Player player, const int nbPointsWon);
 
   std::string fullEnglishScore() const;
-  std::string plainEnglishScore() const;
+  std::string plainEnglishScore(int setIndex = -1, int gameIndex = -1) const;
 
   std::string fullNumericalScore() const;
-  std::string plainNumericalScore() const;
+  std::string plainNumericalScore(int setIndex = -1, int gameIndex = -1) const;
 
   std::string fullScore() const;
-  std::string score() const;
+  std::string score(int setIndex = -1, int gameIndex = -1) const;
 
-  int currentSet() const { return 0; }
+  int currentSet() const { return currentSetIndex; }
   
   int currentPointInSet() const;
 
   void setPlayerName(Player player,const char* name) {}
 
   Player getWinner() const;
+
+  int getNbSetsWonBy(Player player) const;
 
   bool isEnded() const;
 };

@@ -32,4 +32,6 @@ public:
 	int getWinner() const;
 
 	bool isEnded() const;
+
+	int getCurrentGameIndex() const;
 };

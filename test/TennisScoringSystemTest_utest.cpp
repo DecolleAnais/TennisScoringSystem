@@ -51,21 +51,21 @@ TEST(TennisScoringSystemTest, after_1_set_ended_the_plain_english_score_should_b
     ASSERT_EQ(tennisMatch.score(),"0-0");
 
     // check full score
-    std::string fullEnglishScore = "Set 1 | Game won by Player1 || Game won by Player1 || Game won by Player1 |\n"
-                                   "Set 2 | Love-All || Love-All || Love-All |\n"
-                                   "Set 3 | Love-All || Love-All || Love-All |\n";
+    std::string fullEnglishScore = "Set 1 | Game won by Player1 || Game won by Player1 || Game won by Player1 || Game won by Player1 || Game won by Player1 || Game won by Player1 |\n"
+                                   "Set 2 | Love-All || Love-All || Love-All || Love-All || Love-All || Love-All |\n"
+                                   "Set 3 | Love-All || Love-All || Love-All || Love-All || Love-All || Love-All |\n";
 
     ASSERT_EQ(tennisMatch.fullEnglishScore(), fullEnglishScore.c_str());
 
-    std::string fullNumericalScore = "Set 1 | Game won by Player1 || Game won by Player1 || Game won by Player1 |\n"
-                                     "Set 2 | 0-0 || 0-0 || 0-0 |\n"
-                                     "Set 3 | 0-0 || 0-0 || 0-0 |\n";
+    std::string fullNumericalScore = "Set 1 | Game won by Player1 || Game won by Player1 || Game won by Player1 || Game won by Player1 || Game won by Player1 || Game won by Player1 |\n"
+                                     "Set 2 | 0-0 || 0-0 || 0-0 || 0-0 || 0-0 || 0-0 |\n"
+                                     "Set 3 | 0-0 || 0-0 || 0-0 || 0-0 || 0-0 || 0-0 |\n";
 
     ASSERT_EQ(tennisMatch.fullNumericalScore(), fullNumericalScore.c_str());
 
-    std::string fullScore = "Set 1 | 4-0 || 4-0 || 4-0 |\n"
-                            "Set 2 | 0-0 || 0-0 || 0-0 |\n"
-                            "Set 3 | 0-0 || 0-0 || 0-0 |\n";
+    std::string fullScore = "Set 1 | 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 |\n"
+                            "Set 2 | 0-0 || 0-0 || 0-0 || 0-0 || 0-0 || 0-0 |\n"
+                            "Set 3 | 0-0 || 0-0 || 0-0 || 0-0 || 0-0 || 0-0 |\n";
 
     ASSERT_EQ(tennisMatch.fullScore(), fullScore.c_str());
 

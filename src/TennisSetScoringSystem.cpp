@@ -8,8 +8,6 @@ TennisSetScoringSystem::TennisSetScoringSystem()
 
 void TennisSetScoringSystem::pointWonBy(const int player)
 {
-	// std::cout << "score : " << score() << std::endl;
-
 	games[currentGameIndex].pointWonBy(player);
 
 	if(games[currentGameIndex].isEnded())
@@ -68,7 +66,7 @@ std::string TennisSetScoringSystem::plainNumericalScore(int gameIndex) const
 {
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
-	
+
 	return games[gameIndex].plainNumericalScore();
 }
 
@@ -145,4 +143,9 @@ bool TennisSetScoringSystem::isEnded() const
 	bool endedByTieBreak = nbGamesWonByPlayer1 >= 6 && nbGamesWonByPlayer2 >= 6 && std::abs(nbGamesWonByPlayer1 - nbGamesWonByPlayer2) == 1;
 
 	return endedByAdvantage || endedByTieBreak;
+}
+
+int TennisSetScoringSystem::getCurrentGameIndex() const
+{
+	return currentGameIndex;
 }
