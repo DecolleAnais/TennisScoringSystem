@@ -22,7 +22,6 @@ std::string TennisGameTieBreakScoringSystem::plainNumericalScore() const
 
 bool TennisGameTieBreakScoringSystem::isEnded() const
 {
-
 	int maxScore = std::max(gameScore[0], gameScore[1]);
 
 	return (maxScore >= minPointsToWin && std::abs(gameScore[0] - gameScore[1]) >= 2);

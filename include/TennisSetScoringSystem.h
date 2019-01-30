@@ -12,6 +12,7 @@ private:
 
 public:
 	TennisSetScoringSystem();
+	~TennisSetScoringSystem();
 
 	void pointWonBy(const int player);
 	void pointsWonBy(const int player, const int nbPointsWon);
@@ -34,4 +35,10 @@ public:
 	bool isEnded() const;
 
 	int getCurrentGameIndex() const;
+
+	bool isGameEnded(int gameIndex = -1) const;
+
+	bool isTieBreakGame(int gameIndex = -1) const;
+
+	int currentPointInGame(int gameIndex = -1) const;
 };

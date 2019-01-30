@@ -31,4 +31,6 @@ public:
 	int getWinner() const;
 
 	virtual bool isEnded() const = 0;
+
+	int currentPoint() const;
 };

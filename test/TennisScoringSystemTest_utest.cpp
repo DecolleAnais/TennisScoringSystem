@@ -227,7 +227,42 @@ TEST(TennisScoringSystemTest, at_second_point_of_tie_break_game_server_should_be
     ASSERT_EQ(tennisMatch.getServerName(), "Djokovic");
 }
 
+TEST(TennisScoringSystemTest, at_point_4_of_tie_break_game_server_should_be_Player1)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
 
+    int nbPointsInAGame = 4;
+
+    // score set 1 : 5-0
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * 5);  
+    // score set 1 : 5-6
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * 6); 
+    // score set 1 : 6-6 -> tie break for the next game
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, 4);
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
+    ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
+
+TEST(TennisScoringSystemTest, after_1_set_server_should_be_Player1)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    int nbPointsInAGame = 4;
+    int nbGamesInASet = 6;
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * nbGamesInASet);   
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
+    ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
 
 
 int main(int argc, char ** argv)

@@ -5,8 +5,9 @@ class TennisScoringSystem
 {
 private:
   int pointCount {0};
+  int gameCount {0};
 
-  std::vector<TennisSetScoringSystem> sets;
+  std::vector<TennisSetScoringSystem*> sets;
 
   int currentSetIndex = 0;
 
@@ -24,6 +25,7 @@ public:
   };
 
   TennisScoringSystem(NbSetsFormat nbSetsFormat = NbSetsFormat::BestOfThree);
+  ~TennisScoringSystem();
 
   void pointWonBy(Player player);
 

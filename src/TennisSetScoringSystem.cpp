@@ -1,6 +1,8 @@
 #include "TennisSetScoringSystem.h"
 #include "TennisGameAdvantageScoringSystem.h"
 #include "TennisGameTieBreakScoringSystem.h"
+#include <typeinfo>
+
 #include <iostream>
 
 TennisSetScoringSystem::TennisSetScoringSystem()
@@ -11,15 +13,28 @@ TennisSetScoringSystem::TennisSetScoringSystem()
 	}
 }
 
+TennisSetScoringSystem::~TennisSetScoringSystem()
+{
+	for(int i = games.size() - 1;i >= 0;i--)
+	{
+		delete(games[i]);
+	}
+}
+
 void TennisSetScoringSystem::pointWonBy(const int player)
 {
+	// add point
 	games[currentGameIndex]->pointWonBy(player);
 
+	// if current game is ended, increments index
 	if(games[currentGameIndex]->isEnded())
 	{
 		currentGameIndex++;
+
+		// if set is not ended and the games vector is full, add a new game
 		if(!isEnded() && currentGameIndex == games.size())
 		{
+			// if equality in set score (6-6), the last game is a tie break
 			if(games.size() == 12)
 			{
 				games.push_back(new TennisGameTieBreakScoringSystem());
@@ -159,4 +174,28 @@ bool TennisSetScoringSystem::isEnded() const
 int TennisSetScoringSystem::getCurrentGameIndex() const
 {
 	return currentGameIndex;
+}
+
+bool TennisSetScoringSystem::isGameEnded(int gameIndex) const
+{
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+
+	return games[gameIndex]->isEnded();
+}
+
+bool TennisSetScoringSystem::isTieBreakGame(int gameIndex) const
+{
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+
+	return typeid(*games[gameIndex]) == typeid(TennisGameTieBreakScoringSystem); 
+}
+
+int TennisSetScoringSystem::currentPointInGame(int gameIndex) const
+{
+	if(gameIndex < 0)
+		gameIndex = currentGameIndex;
+
+	return games[gameIndex]->currentPoint();
 }

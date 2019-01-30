@@ -45,3 +45,8 @@ int TennisGameScoringSystem::getWinner() const
 
 	return (gameScore[0] > gameScore[1]) ? 0 : 1;
 }
+
+int TennisGameScoringSystem::currentPoint() const
+{
+	return gameScore[0] + gameScore[1];
+}
