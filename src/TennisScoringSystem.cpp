@@ -97,6 +97,11 @@ int TennisScoringSystem::currentPointInSet() const {
     return pointCount;
 }
 
+void TennisScoringSystem::setPlayerName(Player player,const char* name)
+{
+
+}
+
 TennisScoringSystem::Player TennisScoringSystem::getWinner() const
 {
 	int pointsPlayer1 = 0;
@@ -132,4 +137,14 @@ bool TennisScoringSystem::isEnded() const
 	int nbSetsToWin = std::ceil( (float)sets.size() / 2.0 );
 
 	return nbSetsWonByPlayer1 == nbSetsToWin || nbSetsWonByPlayer2 == nbSetsToWin;
+}
+
+TennisScoringSystem::Player TennisScoringSystem::getServer() const
+{
+	return Player1;
+}
+
+std::string TennisScoringSystem::getServerName() const
+{
+	return "";
 }

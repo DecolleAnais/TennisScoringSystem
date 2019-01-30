@@ -1,7 +1,6 @@
 #pragma once
 #include "TennisSetScoringSystem.h"
 
-
 class TennisScoringSystem
 {
 private:
@@ -10,6 +9,8 @@ private:
   std::vector<TennisSetScoringSystem> sets;
 
   int currentSetIndex = 0;
+
+  std::map<int, std::string> mapOfPlayerNames;
 
 public:
   enum Player {
@@ -41,11 +42,15 @@ public:
   
   int currentPointInSet() const;
 
-  void setPlayerName(Player player,const char* name) {}
+  void setPlayerName(Player player,const char* name);
 
   Player getWinner() const;
 
   int getNbSetsWonBy(Player player) const;
 
   bool isEnded() const;
+
+  Player getServer() const;
+
+  std::string getServerName() const;
 };

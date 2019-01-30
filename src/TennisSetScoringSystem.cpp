@@ -2,7 +2,6 @@
 #include "TennisGameAdvantageScoringSystem.h"
 #include "TennisGameTieBreakScoringSystem.h"
 #include <iostream>
-#include <typeinfo>
 
 TennisSetScoringSystem::TennisSetScoringSystem()
 {

@@ -130,6 +130,106 @@ TEST(TennisScoringSystemTest, after_1_set_won_by_player1_and_2_sets_won_by_playe
     ASSERT_EQ(tennisMatch.getWinner(), 1);
 }
 
+// TESTS PLAYER NAMES AND SERVICE 1 VS 1
+
+TEST(TennisScoringSystemTest, at_start_server_should_be_Player1)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
+    ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
+
+TEST(TennisScoringSystemTest, after_1_point_won_server_should_be_Player1)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    tennisMatch.pointWonBy(TennisScoringSystem::Player1);
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
+    ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
+
+TEST(TennisScoringSystemTest, after_1_game_server_should_be_Player2)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    int nbPointsInAGame = 4;
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);   
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player2);
+    ASSERT_EQ(tennisMatch.getServerName(), "Djokovic");
+}
+
+TEST(TennisScoringSystemTest, after_2_games_server_should_be_Player1)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    int nbPointsInAGame = 4;
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame);  
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
+    ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
+
+TEST(TennisScoringSystemTest, at_start_of_tie_break_game_server_should_be_Player1)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    int nbPointsInAGame = 4;
+
+    // score set 1 : 5-0
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * 5);  
+    // score set 1 : 5-6
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * 6); 
+    // score set 1 : 6-6 -> tie break for the next game
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
+    ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
+
+TEST(TennisScoringSystemTest, at_second_point_of_tie_break_game_server_should_be_Player2)
+{
+    // a tennis match in 3 sets by default
+    TennisScoringSystem tennisMatch;
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
+
+    int nbPointsInAGame = 4;
+
+    // score set 1 : 5-0
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * 5);  
+    // score set 1 : 5-6
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * 6); 
+    // score set 1 : 6-6 -> tie break for the next game
+    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+
+    tennisMatch.pointWonBy(TennisScoringSystem::Player1);
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player2);
+    ASSERT_EQ(tennisMatch.getServerName(), "Djokovic");
+}
+
+
+
+
 int main(int argc, char ** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
