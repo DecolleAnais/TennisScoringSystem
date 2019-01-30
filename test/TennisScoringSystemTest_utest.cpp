@@ -19,7 +19,7 @@ TEST(TennisScoringSystemTest, if_player1_wins_first_point_the_plain_english_scor
     TennisScoringSystem tennisMatch;
     
     // When player1 wins first point
-    tennisMatch.pointWonBy(TennisScoringSystem::Player1);
+    tennisMatch.pointWonBy(TennisScoringSystem::Team1);
 
     // Then score should be "Fifhteen-Love" 
     ASSERT_EQ(tennisMatch.plainEnglishScore(),"Fifteen-Love");
@@ -43,7 +43,7 @@ TEST(TennisScoringSystemTest, after_1_set_ended_the_plain_english_score_should_b
     int nbGamesInASet = 6;
 
     // player1 wins 1 set
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * nbGamesInASet);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * nbGamesInASet);
 
     // check current score
     ASSERT_EQ(tennisMatch.plainEnglishScore(),"Love-All");
@@ -86,7 +86,7 @@ TEST(TennisScoringSystemTest, after_2_sets_won_by_player1_the_match_should_be_en
     int nbSets = 2;
 
     // player1 wins 2 sets
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * nbGamesInASet * nbSets);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * nbGamesInASet * nbSets);
 
     // match should be ended
     ASSERT_TRUE(tennisMatch.isEnded());
@@ -102,10 +102,10 @@ TEST(TennisScoringSystemTest, after_1_set_won_by_each_player_the_match_should_no
     int nbGamesInASet = 6;
 
     // player1 wins 1 set
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * nbGamesInASet);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * nbGamesInASet);
 
     // player2 wins 1 set
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * nbGamesInASet);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team2, nbPointsInAGame * nbGamesInASet);
 
     // match should not be ended
     ASSERT_FALSE(tennisMatch.isEnded());
@@ -120,10 +120,10 @@ TEST(TennisScoringSystemTest, after_1_set_won_by_player1_and_2_sets_won_by_playe
     int nbGamesInASet = 6;
 
     // player1 wins 1 set
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * nbGamesInASet);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * nbGamesInASet);
 
     // player2 wins 2 sets
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * nbGamesInASet * 2);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team2, nbPointsInAGame * nbGamesInASet * 2);
 
     // match should be ended
     ASSERT_TRUE(tennisMatch.isEnded());
@@ -150,7 +150,7 @@ TEST(TennisScoringSystemTest, after_1_point_won_server_should_be_Player1)
     tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
     tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
 
-    tennisMatch.pointWonBy(TennisScoringSystem::Player1);
+    tennisMatch.pointWonBy(TennisScoringSystem::Team1);
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
     ASSERT_EQ(tennisMatch.getServerName(), "Federer");
@@ -164,7 +164,7 @@ TEST(TennisScoringSystemTest, after_1_game_server_should_be_Player2)
     tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
 
     int nbPointsInAGame = 4;
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);   
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);   
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player2);
     ASSERT_EQ(tennisMatch.getServerName(), "Djokovic");
@@ -178,8 +178,8 @@ TEST(TennisScoringSystemTest, after_2_games_server_should_be_Player1)
     tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Djokovic");
 
     int nbPointsInAGame = 4;
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);  
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
     ASSERT_EQ(tennisMatch.getServerName(), "Federer");
@@ -195,11 +195,11 @@ TEST(TennisScoringSystemTest, at_start_of_tie_break_game_server_should_be_Player
     int nbPointsInAGame = 4;
 
     // score set 1 : 5-0
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * 5);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * 5);  
     // score set 1 : 5-6
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * 6); 
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * 6); 
     // score set 1 : 6-6 -> tie break for the next game
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);  
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
     ASSERT_EQ(tennisMatch.getServerName(), "Federer");
@@ -215,13 +215,13 @@ TEST(TennisScoringSystemTest, at_second_point_of_tie_break_game_server_should_be
     int nbPointsInAGame = 4;
 
     // score set 1 : 5-0
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * 5);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * 5);  
     // score set 1 : 5-6
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * 6); 
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team2, nbPointsInAGame * 6); 
     // score set 1 : 6-6 -> tie break for the next game
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);  
 
-    tennisMatch.pointWonBy(TennisScoringSystem::Player1);
+    tennisMatch.pointWonBy(TennisScoringSystem::Team1);
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player2);
     ASSERT_EQ(tennisMatch.getServerName(), "Djokovic");
@@ -237,13 +237,13 @@ TEST(TennisScoringSystemTest, at_point_4_of_tie_break_game_server_should_be_Play
     int nbPointsInAGame = 4;
 
     // score set 1 : 5-0
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * 5);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * 5);  
     // score set 1 : 5-6
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player2, nbPointsInAGame * 6); 
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team2, nbPointsInAGame * 6); 
     // score set 1 : 6-6 -> tie break for the next game
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame);  
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);  
 
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, 4);
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, 4);
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
     ASSERT_EQ(tennisMatch.getServerName(), "Federer");
@@ -258,10 +258,71 @@ TEST(TennisScoringSystemTest, after_1_set_server_should_be_Player1)
 
     int nbPointsInAGame = 4;
     int nbGamesInASet = 6;
-    tennisMatch.pointsWonBy(TennisScoringSystem::Player1, nbPointsInAGame * nbGamesInASet);   
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * nbGamesInASet);   
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player1);
     ASSERT_EQ(tennisMatch.getServerName(), "Federer");
+}
+
+
+// Tests Teams
+
+TEST(TennisScoringSystemTest, in_double_teams_after_1_set_won_by_team1_server_should_be_Player3)
+{
+    // a tennis match in double teams, in 3 sets by default
+    TennisScoringSystem tennisMatch(TennisScoringSystem::Double);
+
+    // Team 1 Player 1
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+
+    // Team 2 Player 1
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Gasquet");
+
+    // Team 1 Player 2
+    tennisMatch.setPlayerName(TennisScoringSystem::Player3, "Wawrinka");
+
+    // Team 2 Player 2
+    tennisMatch.setPlayerName(TennisScoringSystem::Player4, "Benneteau");
+
+    int nbPointsInAGame = 4;
+    int nbGamesInASet = 6;
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * nbGamesInASet);   
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player3);
+    ASSERT_EQ(tennisMatch.getServerName(), "Wawrinka");
+}
+
+TEST(TennisScoringSystemTest, in_double_teams_after_6_points_won_during_tie_break_game_server_should_be_Player4)
+{
+    // a tennis match in double teams, in 3 sets by default
+    TennisScoringSystem tennisMatch(TennisScoringSystem::Double);
+
+    // Team 1 Player 1
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+
+    // Team 2 Player 1
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Gasquet");
+
+    // Team 1 Player 2
+    tennisMatch.setPlayerName(TennisScoringSystem::Player3, "Wawrinka");
+
+    // Team 2 Player 2
+    tennisMatch.setPlayerName(TennisScoringSystem::Player4, "Benneteau");
+
+    int nbPointsInAGame = 4;
+
+    // score set 1 : 5-0
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame * 5);  
+    // score set 1 : 5-6
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team2, nbPointsInAGame * 6); 
+    // score set 1 : 6-6 -> tie break for the next game
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);  
+    
+    // Team 2 wins 4 points    
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team2, 6);  
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player4);
+    ASSERT_EQ(tennisMatch.getServerName(), "Benneteau");
 }
 
 

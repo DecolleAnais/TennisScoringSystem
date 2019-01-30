@@ -1,7 +1,7 @@
 #include "TennisScoringSystem.h"
 #include <cmath>
 
-TennisScoringSystem::TennisScoringSystem(NbSetsFormat nbSetsFormat)
+TennisScoringSystem::TennisScoringSystem(TeamsFormat teamsFormat, NbSetsFormat nbSetsFormat) : teamsFormat(teamsFormat)
 {
 	for(int i = 0;i < nbSetsFormat;i++)
 	{
@@ -17,13 +17,13 @@ TennisScoringSystem::~TennisScoringSystem()
 	}
 }
 
-void TennisScoringSystem::pointWonBy(Player player)
+void TennisScoringSystem::pointWonBy(Team team)
 {
 	// keep the current game index of the current set
     int gameIndexInSet = sets[currentSetIndex]->getCurrentGameIndex();
 
-    // add a point to the player
-    sets[currentSetIndex]->pointWonBy(player);
+    // add a point to the team
+    sets[currentSetIndex]->pointWonBy(team);
     pointCount++;
 
     if(sets[currentSetIndex]->isEnded())
@@ -38,10 +38,10 @@ void TennisScoringSystem::pointWonBy(Player player)
     }
 }
 
-void TennisScoringSystem::pointsWonBy(Player player, const int nbPointsWon)
+void TennisScoringSystem::pointsWonBy(Team team, const int nbPointsWon)
 {
 	for(int i = 0;i < nbPointsWon;i++)
-		pointWonBy(player);
+		pointWonBy(team);
 }
 
 std::string TennisScoringSystem::fullEnglishScore() const
@@ -113,6 +113,12 @@ std::string TennisScoringSystem::score(int setIndex, int gameIndex) const
 	return sets[setIndex]->score(gameIndex);
 }
 
+std::string TennisScoringSystem::getFinalScore() const
+{
+	return "";
+}
+
+
 int TennisScoringSystem::currentPointInSet() const {
     return pointCount;
 }
@@ -122,59 +128,68 @@ void TennisScoringSystem::setPlayerName(Player player,const char* name)
 	mapOfPlayerNames.emplace(player, std::string(name));
 }
 
-TennisScoringSystem::Player TennisScoringSystem::getWinner() const
+TennisScoringSystem::Team TennisScoringSystem::getPlayerTeam(Player player) const
 {
-	int pointsPlayer1 = 0;
-	int pointsPlayer2 = 0;
-
-	for(TennisSetScoringSystem * set : sets)
-	{
-		pointsPlayer1 += set->getNbGamesWonBy(Player1);
-		pointsPlayer2 += set->getNbGamesWonBy(Player2);
-	}
-
-	return pointsPlayer1 > pointsPlayer2 ? Player1 : Player2;
+	return (TennisScoringSystem::Team) mapOfPlayerTeams.at(player);
 }
 
-int TennisScoringSystem::getNbSetsWonBy(Player player) const
+TennisScoringSystem::Team TennisScoringSystem::getWinner() const
 {
-	int nbSetsWonByPlayer = 0;
+	int pointsTeam1 = 0;
+	int pointsTeam2 = 0;
 
 	for(TennisSetScoringSystem * set : sets)
 	{
-		if(set->isEnded() && set->getWinner() == player)
+		pointsTeam1 += set->getNbGamesWonBy(Team1);
+		pointsTeam2 += set->getNbGamesWonBy(Team2);
+	}
+
+	return pointsTeam1 > pointsTeam2 ? Team1 : Team2;
+}
+
+int TennisScoringSystem::getNbSetsWonBy(Team team) const
+{
+	int nbSetsWonByTeam = 0;
+
+	for(TennisSetScoringSystem * set : sets)
+	{
+		if(set->isEnded() && set->getWinner() == team)
 		{
-			nbSetsWonByPlayer++;
+			nbSetsWonByTeam++;
 		}
 	}
-	return nbSetsWonByPlayer;
+	return nbSetsWonByTeam;
 }
 
 bool TennisScoringSystem::isEnded() const
 {
-	int nbSetsWonByPlayer1 = getNbSetsWonBy(Player1);
-	int nbSetsWonByPlayer2 = getNbSetsWonBy(Player2);
+	int nbSetsWonByTeam1 = getNbSetsWonBy(Team1);
+	int nbSetsWonByTeam2 = getNbSetsWonBy(Team2);
 	
 	int nbSetsToWin = std::ceil( (float)sets.size() / 2.0 );
 
-	return nbSetsWonByPlayer1 == nbSetsToWin || nbSetsWonByPlayer2 == nbSetsToWin;
+	return nbSetsWonByTeam1 == nbSetsToWin || nbSetsWonByTeam2 == nbSetsToWin;
 }
 
 TennisScoringSystem::Player TennisScoringSystem::getServer() const
 {
+	int nbPlayers = (teamsFormat == TeamsFormat::Single) ? 2 : 4;
+
 	if(sets[currentSetIndex]->isTieBreakGame())
 	{
-		TennisScoringSystem::Player firstServer = (gameCount % 2 == 0) ? Player1 : Player2;
+		//TennisScoringSystem::Player firstServer = (gameCount % 2 == 0) ? Player1 : Player2;
+		int firstServer = gameCount % nbPlayers;
 
 		int currentPoint = sets[currentSetIndex]->currentPointInGame();
 
-		int playerValue =  (int) (firstServer + std::ceil( (float)currentPoint / 2.0) ) % 2;
+		//int playerValue =  (int) (firstServer + std::ceil( (float)currentPoint / 2.0) ) % 2;
+		int playerValue =  (int) (firstServer + std::ceil( (float)currentPoint / 2.0) ) % nbPlayers;
 
 		return (TennisScoringSystem::Player) playerValue;
 	}
 	else
 	{
-		return (gameCount % 2 == 0) ? Player1 : Player2;
+		return (TennisScoringSystem::Player) (gameCount % nbPlayers);
 	}	
 }
 
