@@ -130,9 +130,6 @@ TEST(TennisScoringSystemTest, after_1_set_won_by_player1_and_2_sets_won_by_playe
     ASSERT_EQ(tennisMatch.getWinner(), 1);
 }
 
-
-
-
 int main(int argc, char ** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

@@ -1,22 +1,34 @@
 #include "TennisSetScoringSystem.h"
+#include "TennisGameAdvantageScoringSystem.h"
+#include "TennisGameTieBreakScoringSystem.h"
 #include <iostream>
+#include <typeinfo>
 
 TennisSetScoringSystem::TennisSetScoringSystem()
 {
-	games.resize(6);
+	for(int i = 0;i < 6;i++)
+	{
+		games.push_back(new TennisGameAdvantageScoringSystem());
+	}
 }
 
 void TennisSetScoringSystem::pointWonBy(const int player)
 {
-	games[currentGameIndex].pointWonBy(player);
+	games[currentGameIndex]->pointWonBy(player);
 
-	if(games[currentGameIndex].isEnded())
+	if(games[currentGameIndex]->isEnded())
 	{
 		currentGameIndex++;
 		if(!isEnded() && currentGameIndex == games.size())
 		{
-			TennisGameScoringSystem newGame;
-			games.push_back(newGame);
+			if(games.size() == 12)
+			{
+				games.push_back(new TennisGameTieBreakScoringSystem());
+			}
+			else
+			{
+				games.push_back(new TennisGameAdvantageScoringSystem());
+			}			
 		}
 	}
 
@@ -34,9 +46,9 @@ std::string TennisSetScoringSystem::fullEnglishScore() const
 {
 	std::string res = "";
 
-	for(TennisGameScoringSystem game : games)
+	for(TennisGameScoringSystem *game : games)
 	{
-		res += "| " + game.plainEnglishScore() + " |";
+		res += "| " + game->plainEnglishScore() + " |";
 	}
 
 	return res;
@@ -47,16 +59,16 @@ std::string TennisSetScoringSystem::plainEnglishScore(int gameIndex) const
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 
-	return games[gameIndex].plainEnglishScore();
+	return games[gameIndex]->plainEnglishScore();
 }
 
 std::string TennisSetScoringSystem::fullNumericalScore() const
 {
 	std::string res = "";
 
-	for(TennisGameScoringSystem game : games)
+	for(TennisGameScoringSystem *game : games)
 	{
-		res += "| " + game.plainNumericalScore() + " |";
+		res += "| " + game->plainNumericalScore() + " |";
 	}
 
 	return res;
@@ -67,7 +79,7 @@ std::string TennisSetScoringSystem::plainNumericalScore(int gameIndex) const
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 
-	return games[gameIndex].plainNumericalScore();
+	return games[gameIndex]->plainNumericalScore();
 }
 
 std::string TennisSetScoringSystem::fullScore() const
@@ -86,7 +98,7 @@ std::string TennisSetScoringSystem::score(int gameIndex) const
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 	
-	return std::to_string(games[gameIndex].getScoreOf(0)) + "-" + std::to_string(games[gameIndex].getScoreOf(1));
+	return std::to_string(games[gameIndex]->getScoreOf(0)) + "-" + std::to_string(games[gameIndex]->getScoreOf(1));
 }
 
 std::vector<std::array<int,2>> TennisSetScoringSystem::getGameScores() const
@@ -104,15 +116,15 @@ std::array<int,2> TennisSetScoringSystem::getGameScore(int gameIndex) const
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 	
-	return games[gameIndex].getGameScore();
+	return games[gameIndex]->getGameScore();
 }
 
 int TennisSetScoringSystem::getNbGamesWonBy(int player) const
 {
 	int nbGamesWonByPlayer = 0;
-	for(TennisGameScoringSystem game : games)
+	for(TennisGameScoringSystem *game : games)
 	{
-		if(game.isEnded() && game.getWinner() == player)
+		if(game->isEnded() && game->getWinner() == player)
 		{
 			nbGamesWonByPlayer++;
 		}

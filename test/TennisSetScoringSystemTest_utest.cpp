@@ -127,11 +127,64 @@ TEST(TennisSetScoringSystemTest, if_player1_wins_7_games_and_player2_wins_6_game
 
 	set.pointsWonBy(TennisScoringSystem::Player2, 4); 
 	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
-	set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+	set.pointsWonBy(TennisScoringSystem::Player1, 7); 
 
-    ASSERT_EQ(set.fullScore(),"| 0-4 || 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-4 || 4-0 || 4-0 |");
+    ASSERT_EQ(set.fullScore(),"| 0-4 || 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-4 || 4-0 || 7-0 |");
+
+    // Player2 won the first game
+    ASSERT_EQ(set.plainEnglishScore(0), "Game won by Player2");
+    // Player1 won the last game
+    ASSERT_EQ(set.plainEnglishScore(12), "Game won by Player1");
+
+    ASSERT_EQ(set.plainNumericalScore(0), "Game won by Player2");
+    ASSERT_EQ(set.plainNumericalScore(12), "7-0");
+
     ASSERT_TRUE(set.isEnded());
     ASSERT_EQ(set.getWinner(), 0);
+}
+
+
+TEST(TennisSetScoringSystemTest, if_players_wins_6_games_each_and_score_is_7_6_for_the_tie_break_game_the_set_should_not_be_ended_until_advance_of_2_points)
+{
+    TennisSetScoringSystem set;
+
+    for(int i = 0;i < 5;i++)
+        set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+
+    for(int i = 0;i < 5;i++)
+        set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+
+    set.pointsWonBy(TennisScoringSystem::Player2, 4); 
+    set.pointsWonBy(TennisScoringSystem::Player1, 4); 
+    set.pointsWonBy(TennisScoringSystem::Player1, 6); 
+    set.pointsWonBy(TennisScoringSystem::Player2, 7); 
+
+    ASSERT_EQ(set.fullScore(),"| 0-4 || 0-4 || 0-4 || 0-4 || 0-4 || 4-0 || 4-0 || 4-0 || 4-0 || 4-0 || 0-4 || 4-0 || 6-7 |");
+
+    ASSERT_EQ(set.plainEnglishScore(12), "6-7");
+    ASSERT_EQ(set.plainNumericalScore(12), "6-7");
+    ASSERT_FALSE(set.isEnded());
+
+    // Player1 wins 1 point, the score must be 7-7, and the game should not be ended
+    set.pointWonBy(TennisScoringSystem::Player1); 
+
+    ASSERT_EQ(set.plainEnglishScore(12), "7-7");
+    ASSERT_EQ(set.plainNumericalScore(12), "7-7");
+    ASSERT_FALSE(set.isEnded());
+
+    // Player1 wins 1 point, the score must be 8-7, and the game should not be ended
+    set.pointWonBy(TennisScoringSystem::Player1); 
+
+    ASSERT_EQ(set.plainEnglishScore(12), "8-7");
+    ASSERT_EQ(set.plainNumericalScore(12), "8-7");
+    ASSERT_FALSE(set.isEnded());
+
+    // Player1 wins 1 point, the score must be 9-7, and the game should be ended
+    set.pointWonBy(TennisScoringSystem::Player1); 
+
+    ASSERT_EQ(set.plainEnglishScore(12), "Game won by Player1");
+    ASSERT_EQ(set.plainNumericalScore(12), "9-7");
+    ASSERT_TRUE(set.isEnded());
 }
 
 TEST(TennisSetScoringSystemTest, if_player1_wins_6_games_and_player2_wins_4_games_the_set_should_be_ended)

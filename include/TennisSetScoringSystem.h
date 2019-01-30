@@ -6,7 +6,7 @@
 class TennisSetScoringSystem
 {
 private:
-	std::vector<TennisGameScoringSystem> games;
+	std::vector<TennisGameScoringSystem*> games;
 
 	int currentGameIndex = 0;
 

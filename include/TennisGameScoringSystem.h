@@ -6,40 +6,23 @@
 
 class TennisGameScoringSystem
 {
-private:
+protected:
 
 	std::array<int,2> gameScore = {0, 0};
 
-	std::map<int, std::string> mapOfPlainEnglishScores = 
-	{
-		{0, "Love"},
-		{1, "Fifteen"},
-		{2, "Thirty"},
-		{3, "Forty"}
-	};
-
-	std::map<int, std::string> mapOfPlainNumericalScores = 
-	{
-		{0, "0"},
-		{1, "15"},
-		{2, "30"},
-		{3, "40"}
-	};
-
-	int maxPossibleScore;
-
+	int minPointsToWin;
 
 public:
 
-	TennisGameScoringSystem();
+	TennisGameScoringSystem(){};
 
 	void pointWonBy(int player);
 
 	void pointsWonBy(int player, const int nbPointsWon);
 
-	std::string plainEnglishScore() const;
+	virtual std::string plainEnglishScore() const = 0;
 
-	std::string plainNumericalScore() const;
+	virtual std::string plainNumericalScore() const = 0;
 
 	std::array<int,2> getGameScore() const;
 
@@ -47,5 +30,5 @@ public:
 
 	int getWinner() const;
 
-	bool isEnded() const;
+	virtual bool isEnded() const = 0;
 };
