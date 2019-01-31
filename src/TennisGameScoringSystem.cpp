@@ -19,8 +19,14 @@ void TennisGameScoringSystem::pointsWonBy(int player, const int nbPointsWon)
 	gameScore[player] += nbPointsWon;	
 }
 
-std::array<int,2> TennisGameScoringSystem::getGameScore() const
+std::array<int,2> TennisGameScoringSystem::getGameScore(const bool reverseOrder) const
 {
+	if(reverseOrder)
+	{
+		std::array<int,2> gameScoreReversed = {gameScore[1], gameScore[0]};
+		return gameScoreReversed;
+	}
+
 	return gameScore;
 }
 

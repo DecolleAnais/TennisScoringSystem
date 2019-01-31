@@ -64,6 +64,7 @@ public:
 
   std::string getServerName() const;
 
+  bool scoreDisplayShouldBeReversed() const;
 
 private:
   int pointCount {0};
@@ -84,4 +85,6 @@ private:
   };
 
   TeamsFormat teamsFormat;
+
+  std::array<int,2> finalScore = {0, 0};
 };

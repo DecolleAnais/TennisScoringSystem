@@ -20,11 +20,11 @@ public:
 
 	void pointsWonBy(int player, const int nbPointsWon);
 
-	virtual std::string plainEnglishScore() const = 0;
+	virtual std::string plainEnglishScore(const bool reverseOrder = false) const = 0;
 
-	virtual std::string plainNumericalScore() const = 0;
+	virtual std::string plainNumericalScore(const bool reverseOrder = false) const = 0;
 
-	std::array<int,2> getGameScore() const;
+	std::array<int,2> getGameScore(const bool reverseOrder = false) const;
 
 	int getScoreOf(int player) const;
 

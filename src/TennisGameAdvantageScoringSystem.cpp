@@ -7,28 +7,35 @@ TennisGameAdvantageScoringSystem::TennisGameAdvantageScoringSystem()
 	minPointsToWin = 4;
 }
 
-std::string TennisGameAdvantageScoringSystem::plainEnglishScore() const
+std::string TennisGameAdvantageScoringSystem::plainEnglishScore(const bool reverseOrder) const
 {	
 	std::string score = "";
+
+	std::array<int,2> currentGameScore;
+
+	if(reverseOrder)
+		currentGameScore = {gameScore[1], gameScore[0]};
+	else
+		currentGameScore = gameScore;
 
 	if(isEnded())
 	{
 		score = "Game won by Player" + std::to_string(getWinner() + 1);
 	}
-	else if(gameScore[0] == gameScore[1])
+	else if(currentGameScore[0] == currentGameScore[1])
 	{
-		if(gameScore[0] >= 3)
+		if(currentGameScore[0] >= 3)
 		{
 			score = "Deuce";
 		}
 		else
 		{
-			score = mapOfPlainEnglishScores.at(gameScore[0]) + "-All";
+			score = mapOfPlainEnglishScores.at(currentGameScore[0]) + "-All";
 		}
 	}
 	else
 	{
-		int maxScore = std::max(gameScore[0], gameScore[1]);
+		int maxScore = std::max(currentGameScore[0], currentGameScore[1]);
 
 		if(maxScore > maxPossibleScore)
 		{
@@ -36,13 +43,13 @@ std::string TennisGameAdvantageScoringSystem::plainEnglishScore() const
 		}
 		else
 		{
-			score = mapOfPlainEnglishScores.at(gameScore[0]) + "-" + mapOfPlainEnglishScores.at(gameScore[1]);
+			score = mapOfPlainEnglishScores.at(currentGameScore[0]) + "-" + mapOfPlainEnglishScores.at(currentGameScore[1]);
 		}
 	}	
 	return score;
 }
 
-std::string TennisGameAdvantageScoringSystem::plainNumericalScore() const
+std::string TennisGameAdvantageScoringSystem::plainNumericalScore(const bool reverseOrder) const
 {
 	std::string score = "";
 
@@ -65,7 +72,10 @@ std::string TennisGameAdvantageScoringSystem::plainNumericalScore() const
 	std::string score1 = mapOfPlainNumericalScores.at( std::min(gameScore[0], maxPossibleScore) ) + advantageScore1;
 	std::string score2 = mapOfPlainNumericalScores.at( std::min(gameScore[1], maxPossibleScore) ) + advantageScore2;
 
-	score =  score1 + "-" + score2;
+	if(reverseOrder)
+		score =  score2 + "-" + score1;
+	else
+		score =  score1 + "-" + score2;
 
 	return score;
 }

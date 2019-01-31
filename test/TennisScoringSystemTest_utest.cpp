@@ -91,6 +91,7 @@ TEST(TennisScoringSystemTest, after_2_sets_won_by_player1_the_match_should_be_en
     // match should be ended
     ASSERT_TRUE(tennisMatch.isEnded());
     ASSERT_EQ(tennisMatch.getWinner(), 0);
+    ASSERT_EQ(tennisMatch.getFinalScore(), "12-0");
 }
 
 TEST(TennisScoringSystemTest, after_1_set_won_by_each_player_the_match_should_not_be_ended)
@@ -128,6 +129,7 @@ TEST(TennisScoringSystemTest, after_1_set_won_by_player1_and_2_sets_won_by_playe
     // match should be ended
     ASSERT_TRUE(tennisMatch.isEnded());
     ASSERT_EQ(tennisMatch.getWinner(), 1);
+    ASSERT_EQ(tennisMatch.getFinalScore(), "12-6");
 }
 
 // TESTS PLAYER NAMES AND SERVICE 1 VS 1
@@ -290,6 +292,8 @@ TEST(TennisScoringSystemTest, in_double_teams_after_1_set_won_by_team1_server_sh
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player3);
     ASSERT_EQ(tennisMatch.getServerName(), "Wawrinka");
+
+    ASSERT_EQ(tennisMatch.score(), "0-0");
 }
 
 TEST(TennisScoringSystemTest, in_double_teams_after_6_points_won_during_tie_break_game_server_should_be_Player4)
@@ -323,8 +327,39 @@ TEST(TennisScoringSystemTest, in_double_teams_after_6_points_won_during_tie_brea
 
     ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player4);
     ASSERT_EQ(tennisMatch.getServerName(), "Benneteau");
+
+    ASSERT_EQ(tennisMatch.score(), "6-0");
 }
 
+// Tests score display order in function of service
+
+TEST(TennisScoringSystemTest, af_game_2_the_score_of_team1_should_be_displayed_in_second)
+{
+    // a tennis match in double teams, in 3 sets by default
+    TennisScoringSystem tennisMatch(TennisScoringSystem::Double);
+
+    // Team 1 Player 1
+    tennisMatch.setPlayerName(TennisScoringSystem::Player1, "Federer");
+
+    // Team 2 Player 1
+    tennisMatch.setPlayerName(TennisScoringSystem::Player2, "Gasquet");
+
+    // Team 1 Player 2
+    tennisMatch.setPlayerName(TennisScoringSystem::Player3, "Wawrinka");
+
+    // Team 2 Player 2
+    tennisMatch.setPlayerName(TennisScoringSystem::Player4, "Benneteau");
+
+    int nbPointsInAGame = 4;
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, nbPointsInAGame);
+
+    tennisMatch.pointsWonBy(TennisScoringSystem::Team1, 2);  
+
+    ASSERT_EQ(tennisMatch.getServer(), TennisScoringSystem::Player2);
+    ASSERT_EQ(tennisMatch.getServerName(), "Gasquet");
+
+    ASSERT_EQ(tennisMatch.score(), "0-2");
+}
 
 int main(int argc, char ** argv)
 {

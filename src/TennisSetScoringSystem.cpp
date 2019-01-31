@@ -56,81 +56,98 @@ void TennisSetScoringSystem::pointsWonBy(const int player, const int nbPointsWon
 	}
 }
 
-std::string TennisSetScoringSystem::fullEnglishScore() const
+std::string TennisSetScoringSystem::fullEnglishScore(const bool reverseOrder) const
 {
 	std::string res = "";
 
 	for(TennisGameScoringSystem *game : games)
 	{
-		res += "| " + game->plainEnglishScore() + " |";
+		res += "| " + game->plainEnglishScore(reverseOrder) + " |";
 	}
 
 	return res;
 }
 
-std::string TennisSetScoringSystem::plainEnglishScore(int gameIndex) const
+std::string TennisSetScoringSystem::plainEnglishScore(int gameIndex, const bool reverseOrder) const
 {
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 
-	return games[gameIndex]->plainEnglishScore();
+	return games[gameIndex]->plainEnglishScore(reverseOrder);
 }
 
-std::string TennisSetScoringSystem::fullNumericalScore() const
+std::string TennisSetScoringSystem::fullNumericalScore(const bool reverseOrder) const
 {
 	std::string res = "";
 
 	for(TennisGameScoringSystem *game : games)
 	{
-		res += "| " + game->plainNumericalScore() + " |";
+		res += "| " + game->plainNumericalScore(reverseOrder) + " |";
 	}
 
 	return res;
 }
 
-std::string TennisSetScoringSystem::plainNumericalScore(int gameIndex) const
+std::string TennisSetScoringSystem::plainNumericalScore(int gameIndex, const bool reverseOrder) const
 {
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 
-	return games[gameIndex]->plainNumericalScore();
+	return games[gameIndex]->plainNumericalScore(reverseOrder);
 }
 
-std::string TennisSetScoringSystem::fullScore() const
+std::string TennisSetScoringSystem::fullScore(const bool reverseOrder) const
 {
 	std::string res = "";
 
 	for(int i = 0;i  < games.size();i++)
 	{
-		res += "| " + score(i) + " |";
+		res += "| " + score(i, reverseOrder) + " |";
 	}
 
 	return res;
 }
-std::string TennisSetScoringSystem::score(int gameIndex) const
+std::string TennisSetScoringSystem::score(int gameIndex, const bool reverseOrder) const
 {
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 	
-	return std::to_string(games[gameIndex]->getScoreOf(0)) + "-" + std::to_string(games[gameIndex]->getScoreOf(1));
+	if(reverseOrder)
+		return std::to_string(games[gameIndex]->getScoreOf(1)) + "-" + std::to_string(games[gameIndex]->getScoreOf(0));
+	else
+		return std::to_string(games[gameIndex]->getScoreOf(0)) + "-" + std::to_string(games[gameIndex]->getScoreOf(1));
 }
 
-std::vector<std::array<int,2>> TennisSetScoringSystem::getGameScores() const
+std::vector<std::array<int,2>> TennisSetScoringSystem::getPointScores(const bool reverseOrder) const
 {
-	std::vector<std::array<int,2>> gameScores;
+	std::vector<std::array<int,2>> pointScores;
 
 	for(int i = 0;i < games.size();i++)
-		gameScores.push_back(getGameScore(i));
+		pointScores.push_back(getPointScore(i, reverseOrder));
 
-	return gameScores;
+	return pointScores;
 }
 
-std::array<int,2> TennisSetScoringSystem::getGameScore(int gameIndex) const
+std::array<int,2> TennisSetScoringSystem::getPointScore(int gameIndex, const bool reverseOrder) const
 {
 	if(gameIndex < 0)
 		gameIndex = currentGameIndex;
 	
-	return games[gameIndex]->getGameScore();
+	return games[gameIndex]->getGameScore(reverseOrder);
+}
+
+std::array<int,2> TennisSetScoringSystem::getNbGamesWonByTeams() const
+{
+	std::array<int,2> nbGamesWonByTeams = {0};
+
+	for(TennisGameScoringSystem *game : games)
+	{
+		if(game->isEnded())
+		{
+			nbGamesWonByTeams[game->getWinner()]++;
+		}
+	}
+	return nbGamesWonByTeams;
 }
 
 int TennisSetScoringSystem::getNbGamesWonBy(int player) const
