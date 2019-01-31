@@ -1,45 +1,42 @@
 # Introduction
 
-Write production-grade implementation focusing on simplicity, readability and efficiency. 
-The code should be also fully covered by unit tests.
-
-# Instructions and deliverables
-
-1. Before starting to code, initialize a git repository.
-2. Perform regular commits during your coding session.
-3. When the exercise is done, prepare an archive containing everything (including .git folder) except build output folder.
-4. Send this archive by email.
-
-# Problem Statement
-
-Create a program in C++, which provide support to follow the score of a Tennis match.
-
+Program in C++, which provide support to follow the score of a Tennis match.
 
 ## Tennis Score Rules
 
 visit https://en.wikipedia.org/wiki/Tennis_scoring_system
 
+## How to use
 
-The tennis scoring system is a way to keep track of tennis matches.
-[...]
-A tennis match is composed of points, games, and sets. A set consists of a number of games (a minimum of six), which in turn each consist of points. A set is won by the first side to win 6 games, with a margin of at least 2 games over the other side (e.g. 6–3 or 7–5). There is usually a tie-break if the set is tied at six games per player. A match is won when a player or a doubles team has won the majority of the prescribed number of sets. Matches employ either a best-of-three (first to two sets wins) or best-of-five (first to three sets wins) set format. The best-of-five set format is usually only used in the men's singles or doubles matches at Grand Slam and Davis Cup matches.
+To build and launch the unit tests : ./runTests  
+(Executable : TennisScoringSystemTest)
 
+To build and launch the interface in terminal to test the program with user values : ./run
+(Executable : TennisMatchTest)
 
-## Suggested Test Cases
+## Classes
 
-- when match begins, serving player is Player1
+The classes are separated in : 
+- TennisScoringSystem : manages a whole match
+- TennisSetScoringSystem : manages a set
+- TennisGameScoringSystem : manages a game
+  - TennisGameAdvantageScoringSystem : inherits from TennisGameScoringSystem , the game has specific display and winning condition 
+  - TennisGameTieBreakScoringSystem : inherits from TennisGameScoringSystem , the game has specific display and winning condition 
 
-In first set:
-- When Player1 wins first point score is 15-0
-- When Player 1 wins first point and second point score is 30-0
+The file src/main.cpp contains the interface to test the program in terminal.
+The files in tests/ are the unit tests.
 
-In first set:
-- When player2 wins first point score is 0-15 => 
-- When player2 wins first point and second point score is 0-30 => Love-Thirteen
+## Functionalities
 
-In first set:
-- When both players have won 2 points each score is 30-30 => Thirteen-O
-
-etc...
-
+A match contains multiple sets, and these sets contains multiple games.
+- A match can be played in Best-Of-Three or Best-Of-Five modes (the majority of 3 or 5 sets must be won to win the match)
+- A match can be played in 1 VS 1 or 2 VS 2
+- When a set has a score 6-6, a tie break game is played instead of a advantage game
+- The server is announced, and the score of the server is displayed first
+- The winner is announced with the final score
+- 3 display modes are available for the same score :
+  - english : Fifteen-Love
+  - numeric : 15-0
+  - standard : 1-0
+  
 
