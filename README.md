@@ -33,7 +33,7 @@ A match contains multiple sets, and these sets contains multiple games.
 - A match can be played in 1 VS 1 or 2 VS 2
 - When a set has a score 6-6, a tie break game is played instead of a advantage game
 - The server is announced, and the score of the server is displayed first
-- The winner is announced with the final score
+- The winner is announced with the final score (with the winner score first)
 - 3 display modes are available for the same score :
   - english : Fifteen-Love
   - numeric : 15-0
