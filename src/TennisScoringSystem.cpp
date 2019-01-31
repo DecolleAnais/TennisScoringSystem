@@ -49,11 +49,9 @@ std::string TennisScoringSystem::fullEnglishScore() const
 {
 	std::string res = "";
 
-	bool scoreDisplayReversed = scoreDisplayShouldBeReversed();
-
 	for(int i = 0;i < sets.size();i++)
 	{
-		res += "Set " +  std::to_string(i+1) + " " + sets[i]->fullEnglishScore(scoreDisplayReversed) + "\n";
+		res += "Set " +  std::to_string(i+1) + " " + sets[i]->fullEnglishScore() + "\n";
 	}
 
 	return res;
@@ -74,11 +72,9 @@ std::string TennisScoringSystem::fullNumericalScore() const
 {
 	std::string res = "";
 
-	bool scoreDisplayReversed = scoreDisplayShouldBeReversed();
-
 	for(int i = 0;i < sets.size();i++)
 	{
-		res += "Set " +  std::to_string(i+1) + " " + sets[i]->fullNumericalScore(scoreDisplayReversed) + "\n";
+		res += "Set " +  std::to_string(i+1) + " " +  sets[i]->fullNumericalScore() + "\n";
 	}
 
 	return res;
@@ -99,11 +95,9 @@ std::string TennisScoringSystem::fullScore() const
 {
 	std::string res = "";
 
-	bool scoreDisplayReversed = scoreDisplayShouldBeReversed();
-
 	for(int i = 0;i < sets.size();i++)
 	{
-		res += "Set " + std::to_string(i+1) + " " + sets[i]->fullScore(scoreDisplayReversed) + "\n";
+		res += "Set " + std::to_string(i+1) + " " + sets[i]->fullScore() + "\n";
 	}
 
 	return res;
@@ -144,9 +138,9 @@ int TennisScoringSystem::currentPointInSet() const {
     return pointCount;
 }
 
-void TennisScoringSystem::setPlayerName(Player player,const char* name)
+void TennisScoringSystem::setPlayerName(Player player,const std::string name)
 {
-	mapOfPlayerNames.emplace(player, std::string(name));
+	mapOfPlayerNames.emplace(player, name);
 }
 
 TennisScoringSystem::Team TennisScoringSystem::getPlayerTeam(Player player) const
@@ -154,7 +148,7 @@ TennisScoringSystem::Team TennisScoringSystem::getPlayerTeam(Player player) cons
 	return (TennisScoringSystem::Team) mapOfPlayerTeams.at(player);
 }
 
-TennisScoringSystem::Team TennisScoringSystem::getWinner() const
+int TennisScoringSystem::getWinner() const
 {
 	int pointsTeam1 = 0;
 	int pointsTeam2 = 0;
@@ -165,7 +159,20 @@ TennisScoringSystem::Team TennisScoringSystem::getWinner() const
 		pointsTeam2 += set->getNbGamesWonBy(Team2);
 	}
 
+	if(pointsTeam1 == pointsTeam2)
+		return -1;
+
 	return pointsTeam1 > pointsTeam2 ? Team1 : Team2;
+}
+
+std::string TennisScoringSystem::getNamesInTeam(TennisScoringSystem::Team team) const
+{
+	std::string winners = mapOfPlayerNames.at(team);
+	if(teamsFormat == TeamsFormat::Double)
+	{
+		winners += " & " + mapOfPlayerNames.at( team + 2);
+	}
+	return winners;
 }
 
 int TennisScoringSystem::getNbSetsWonBy(Team team) const

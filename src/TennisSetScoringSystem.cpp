@@ -3,8 +3,6 @@
 #include "TennisGameTieBreakScoringSystem.h"
 #include <typeinfo>
 
-#include <iostream>
-
 TennisSetScoringSystem::TennisSetScoringSystem()
 {
 	for(int i = 0;i < 6;i++)

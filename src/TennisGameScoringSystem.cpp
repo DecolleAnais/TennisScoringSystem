@@ -1,22 +1,29 @@
 #include "TennisGameScoringSystem.h"
 
-#include <assert.h>
-#include <algorithm>
 #include <iostream>
-#include <math.h>
 
 void TennisGameScoringSystem::pointWonBy(int player)
 {
-	assert(player < gameScore.size() && player >= 0);
-	
-	gameScore[player]++;	
+	try
+	{
+		gameScore[player]++;	
+	}
+	catch(std::exception& e)
+	{
+		std::cout << "Error accessing gameScore of player" << player << " " << e.what() << std::endl;
+	}
 }
 
 void TennisGameScoringSystem::pointsWonBy(int player, const int nbPointsWon)
 {
-	assert(player < gameScore.size() && player >= 0);
-	
-	gameScore[player] += nbPointsWon;	
+	try
+	{
+		gameScore[player] += nbPointsWon;
+	}	
+	catch(std::exception& e)
+	{
+		std::cout << "Error accessing gameScore of player" << player << " " << e.what() << std::endl;
+	}
 }
 
 std::array<int,2> TennisGameScoringSystem::getGameScore(const bool reverseOrder) const
@@ -38,7 +45,7 @@ int TennisGameScoringSystem::getScoreOf(int player) const
 	}
 	catch(std::exception& e)
 	{
-		std::cout << "Error accessing gameScore of player" << player << e.what() << std::endl;
+		std::cout << "Error accessing gameScore of player" << player << " " << e.what() << std::endl;
 	}
 
 	return -1;

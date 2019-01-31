@@ -18,3 +18,14 @@ add_executable(TennisScoringSystemTest
 target_link_libraries(TennisScoringSystemTest pthread stdc++)
 
 
+add_executable(TennisMatchTest 
+      ./src/TennisGameScoringSystem.cpp
+      ./src/TennisGameAdvantageScoringSystem.cpp
+      ./src/TennisGameTieBreakScoringSystem.cpp
+      ./src/TennisSetScoringSystem.cpp
+      ./src/TennisScoringSystem.cpp
+      ./src/main.cpp
+)
+target_link_libraries(TennisMatchTest pthread stdc++)
+
+
